@@ -31,8 +31,6 @@ class SCO(arcade.Window):
         self.view_left = 0
 
     def setup(self):
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 50
         self.view_left = 0
         self.view_bottom = 0
 
@@ -72,7 +70,7 @@ class SCO(arcade.Window):
         arcade.start_render()
 
         # Draw the background texture
-        arcade.draw_lrwh_rectangle_textured(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+        arcade.draw_lrwh_rectangle_textured(0, 0, 2048, 1200, self.background)
         self.player_sprite.draw()
 
     def on_update(self, delta_time):
@@ -91,26 +89,28 @@ class SCO(arcade.Window):
         elif self.right_pressed and not self.left_pressed:
             self.player_sprite.change_x = MOVEMENT_SPEED
 
-    # Call update to move the sprite
-    # If using a physics engine, call update player to rely on physics engine
-    # for movement, and call physics engine here.
+        # Call update to move the sprite
+        # If using a physics engine, call update player to rely on physics engine
+        # for movement, and call physics engine here.
         self.player_sprite.update()
-    # --- Manage Scrolling ---
-    # Keep track of if we changed the boundary. We don't want to call the
-    # set_viewport command if we didn't change the view port.
+        # --- Manage Scrolling ---
+        # Keep track of if we changed the boundary. We don't want to call the
+        # set_viewport command if we didn't change the view port.
         changed = False
 
-        # Scroll left
-        left_boundary = self.view_left + VIEWPORT_MARGIN
-        if self.player_sprite.left < left_boundary:
-            self.view_left -= left_boundary - self.player_sprite.left
-            changed = True
+        if self.player_sprite.center_x >= 51:
+            # Scroll left
+            left_boundary = self.view_left + VIEWPORT_MARGIN
+            if self.player_sprite.left < left_boundary:
+                self.view_left -= left_boundary - self.player_sprite.left
+                changed = True
 
-        # Scroll right
-        right_boundary = self.view_left + SCREEN_WIDTH - VIEWPORT_MARGIN
-        if self.player_sprite.right > right_boundary:
-            self.view_left += self.player_sprite.right - right_boundary
-            changed = True
+        if self.player_sprite.center_x <= 1999:
+            # Scroll right
+            right_boundary = self.view_left + SCREEN_WIDTH - VIEWPORT_MARGIN
+            if self.player_sprite.right > right_boundary:
+                self.view_left += self.player_sprite.right - right_boundary
+                changed = True
 
         # Scroll up
         top_boundary = self.view_bottom + SCREEN_HEIGHT - VIEWPORT_MARGIN
@@ -133,7 +133,8 @@ class SCO(arcade.Window):
 
         # If we changed the boundary values, update the view port to match
         if changed:
-            arcade.set_viewport(self.view_left, SCREEN_WIDTH + self.view_left, self.view_bottom, SCREEN_HEIGHT + self.view_bottom)
+            arcade.set_viewport(self.view_left, SCREEN_WIDTH + self.view_left, self.view_bottom, SCREEN_HEIGHT +
+                                self.view_bottom)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
