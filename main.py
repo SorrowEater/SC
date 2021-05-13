@@ -13,7 +13,7 @@ class SCO(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, resizable=True)
 
-        self.background = arcade.load_texture('images/background.bmp')
+        self.background = arcade.load_texture('images/background.jpg')
         self.right_pressed = None
         self.left_pressed = None
         self.down_pressed = None
